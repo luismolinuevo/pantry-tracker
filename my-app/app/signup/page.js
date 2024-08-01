@@ -1,14 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  Input,
-  Checkbox,
-  Button,
-  Typography,
-} from "../../material_tailwind";
+import { Card, Input, Button, Typography } from "../../material_tailwind";
 import signUp from "../lib/auth"; // Assuming this file contains the signUp function
+import Link from "next/link";
 
 export function SignUp() {
   const [email, setEmail] = useState("");
@@ -80,34 +75,16 @@ export function SignUp() {
               }}
             />
           </div>
-          <Checkbox
-            label={
-              <Typography
-                variant="small"
-                color="gray"
-                className="flex items-center font-normal"
-              >
-                I agree to the
-                <a
-                  href="#"
-                  className="font-medium transition-colors hover:text-gray-900"
-                >
-                  &nbsp;Terms and Conditions
-                </a>
-              </Typography>
-            }
-            containerProps={{ className: "-ml-2.5" }}
-          />
           <Button type="submit" className="mt-6" fullWidth disabled={loading}>
             {loading ? "Signing up..." : "Sign Up"}
           </Button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {success && <p style={{ color: "green" }}>{success}</p>}
+          {error && <p className="text-red-300 text-center">{error}</p>}
+          {success && <p className="text-green-300 text-center">{success}</p>}
           <Typography color="gray" className="mt-4 text-center font-normal">
-            Already have an account?{" "}
-            <a href="#" className="font-medium text-gray-900">
+            Already have an account?
+            <Link href={"/login"} className="font-medium text-gray-900">
               Sign In
-            </a>
+            </Link>
           </Typography>
         </form>
       </Card>
