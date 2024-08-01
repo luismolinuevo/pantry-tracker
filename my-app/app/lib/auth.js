@@ -1,4 +1,9 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
 import { auth } from "../firebase";
 
 //I would add more error handling in the future
@@ -16,4 +21,37 @@ const signUp = async (email, password) => {
   }
 };
 
-export default signUp;
+const login = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    return userCredential.user;
+  } catch (error) {
+    console.error("Error signing in with email and password: ", error);
+  }
+};
+
+const logOut = async () => {
+  try {
+    await signOut(auth);
+    console.log("User signed out.");
+  } catch (error) {
+    console.error("Error signing out: ", error);
+  }
+};
+
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider();
+  try {
+    const result = await signInWithPopup(auth, provider);
+    console.log("User signed in with Google: ", user);
+    return result.user;
+  } catch (error) {
+    console.error("Error signing in with Google: ", error);
+  }
+};
+
+export { signUp, login, logOut, signInWithGoogle };

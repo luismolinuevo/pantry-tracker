@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Card, Input, Button, Typography } from "../../material_tailwind";
-import signUp from "../lib/auth"; // Assuming this file contains the signUp function
 import Link from "next/link";
+import { signInWithGoogle, signUp } from "../lib/auth";
+import { useRouter } from "next/navigation";
 
 export function SignUp() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -24,12 +25,28 @@ export function SignUp() {
       setSuccess("User signed up successfully!");
       setEmail("");
       setPassword("");
-      setName("");
     } catch (error) {
       console.error("Error signing up with email and password: ", error);
       setError("Failed to sign up. Please try again.");
     } finally {
       setLoading(false);
+      router.push("/");
+    }
+  };
+
+  const handleGoogleSignUp = async () => {
+    setError(null);
+    setSuccess(null);
+
+    try {
+      await signInWithGoogle();
+      setSuccess("User signed up successfully!");
+    } catch (error) {
+      console.error("Error signing up with email and password: ", error);
+      setError("Failed to sign up. Please try again.");
+    } finally {
+      setLoading(false);
+      router.push("/");
     }
   };
 
@@ -80,6 +97,20 @@ export function SignUp() {
           </Button>
           {error && <p className="text-red-300 text-center">{error}</p>}
           {success && <p className="text-green-300 text-center">{success}</p>}
+          <Typography
+            variant="h6"
+            color="blue-gray"
+            className="my-4 text-center"
+          >
+            Or
+          </Typography>
+          <Button
+            onClick={handleGoogleSignUp}
+            className="mt-6 bg-transparent border-2 border-black text-black"
+            fullWidth
+          >
+            Sign Up with Google
+          </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">
             Already have an account?
             <Link href={"/login"} className="font-medium text-gray-900">
