@@ -1,0 +1,1 @@
+import {getAuth, createUserWithEmailAndPassword, sign} from "firebase/auth"
