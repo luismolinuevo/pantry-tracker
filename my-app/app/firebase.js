@@ -12,15 +12,6 @@ const firebaseConfig = {
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-  
-  
-  // apiKey: "AIzaSyBN_NeWmLPzOLWdlQ1GwRw7DkF_cpYME4U",
-  // authDomain: "pantry-tracker-a3aae.firebaseapp.com",
-  // projectId: "pantry-tracker-a3aae",
-  // storageBucket: "pantry-tracker-a3aae.appspot.com",
-  // messagingSenderId: "212972719839",
-  // appId: "1:212972719839:web:ee4a85b775772cff23a36a",
-  // measurementId: "G-P9FZQ72N08"
 };
 
 // Initialize Firebase

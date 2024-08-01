@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase-config";
+import { auth } from "../firebase";
 
+//I would add more error handling in the future
 const signUp = async (email, password) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
