@@ -9,8 +9,10 @@ import {
   IconButton,
 } from "../../material_tailwind";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function StickyNavbar() {
+  const router = useRouter();
   const [openNav, setOpenNav] = useState(false);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ export function StickyNavbar() {
   );
 
   return (
-    <div className="px-15 max-h-[768px] ">
+    <div className="px-15 max-h-[768px]">
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
@@ -63,6 +65,7 @@ export function StickyNavbar() {
                 variant="text"
                 size="sm"
                 className="hidden lg:inline-block"
+                onClick={() => router.push("/login")}
               >
                 <span>Log In</span>
               </Button>
@@ -70,6 +73,7 @@ export function StickyNavbar() {
                 variant="gradient"
                 size="sm"
                 className="hidden lg:inline-block"
+                onClick={() => router.push("/signup")}
               >
                 <span>Sign in</span>
               </Button>

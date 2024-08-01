@@ -13,8 +13,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <StickyNavbar />
-        {children}
+        <div className="flex flex-col h-screen">
+          <StickyNavbar />
+          <div className="flex-grow">{children}</div>
+        </div>
       </body>
     </html>
   );
