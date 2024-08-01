@@ -25,12 +25,12 @@ export function SignUp() {
       setSuccess("User signed up successfully!");
       setEmail("");
       setPassword("");
+      router.push("/");
     } catch (error) {
       console.error("Error signing up with email and password: ", error);
       setError("Failed to sign up. Please try again.");
     } finally {
       setLoading(false);
-      router.push("/");
     }
   };
 
@@ -41,12 +41,12 @@ export function SignUp() {
     try {
       await signInWithGoogle();
       setSuccess("User signed up successfully!");
+      router.push("/");
     } catch (error) {
       console.error("Error signing up with email and password: ", error);
       setError("Failed to sign up. Please try again.");
     } finally {
       setLoading(false);
-      router.push("/");
     }
   };
 
