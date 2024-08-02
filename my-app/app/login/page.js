@@ -25,7 +25,7 @@ export function Login() {
       setSuccess("User logged in successfully!");
       setEmail("");
       setPassword("");
-      router.push("/");
+      // router.push("/");
     } catch (error) {
       console.error("Error logging in with email and password: ", error);
       setError(

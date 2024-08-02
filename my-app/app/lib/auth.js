@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  onAuthStateChanged
 } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -54,13 +55,20 @@ const signInWithGoogle = async () => {
   }
 };
 
-const getCurrentUser = () => {
-  try {
-    const user = auth.currentUser;
-    return user;
-  } catch (error) {
-    console.error("Error getting current user");
-  }
+const getCurrentUser = async () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe(); // Clean up listener
+      if (user) {
+        resolve(user);
+      } else {
+        reject(new Error("No current user found"));
+      }
+    }, reject);
+  });
 };
+
+
+
 
 export { signUp, login, logOut, signInWithGoogle, getCurrentUser };
