@@ -54,4 +54,13 @@ const signInWithGoogle = async () => {
   }
 };
 
-export { signUp, login, logOut, signInWithGoogle };
+const getCurrentUser = () => {
+  try {
+    const user = auth.currentUser;
+    return user;
+  } catch (error) {
+    console.error("Error getting current user");
+  }
+};
+
+export { signUp, login, logOut, signInWithGoogle, getCurrentUser };
