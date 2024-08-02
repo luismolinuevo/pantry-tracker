@@ -9,6 +9,8 @@ import {
   Navbar,
   MobileNav,
   IconButton,
+  Select,
+  Option,
 } from "@material-tailwind/react";
 
 export {
@@ -20,4 +22,6 @@ export {
   Navbar,
   MobileNav,
   IconButton,
+  Select,
+  Option,
 };

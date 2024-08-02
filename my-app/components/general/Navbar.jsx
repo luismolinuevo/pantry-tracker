@@ -51,12 +51,8 @@ export function StickyNavbar() {
     <div className="px-15 max-h-[768px]">
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center justify-between text-blue-gray-900">
-          <Typography
-            as="a"
-            href="#"
-            className="mr-4 cursor-pointer py-1.5 font-medium"
-          >
-            Inventory Tracker
+          <Typography className="mr-4 cursor-pointer py-1.5 font-medium">
+            <Link href={"/"}>Inventory Tracker</Link>
           </Typography>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
@@ -75,7 +71,7 @@ export function StickyNavbar() {
                 className="hidden lg:inline-block"
                 onClick={() => router.push("/signup")}
               >
-                <span>Sign in</span>
+                <span>Sign up</span>
               </Button>
             </div>
             <IconButton
@@ -120,11 +116,23 @@ export function StickyNavbar() {
         <MobileNav open={openNav}>
           {navList}
           <div className="flex items-center gap-x-1">
-            <Button fullWidth variant="text" size="sm" className="">
+            <Button
+              fullWidth
+              variant="text"
+              size="sm"
+              className=""
+              onClick={() => router.push("/login")}
+            >
               <span>Log In</span>
             </Button>
-            <Button fullWidth variant="gradient" size="sm" className="">
-              <span>Sign in</span>
+            <Button
+              fullWidth
+              variant="gradient"
+              size="sm"
+              className=""
+              onClick={() => router.push("/signup")}
+            >
+              <span>Sign up</span>
             </Button>
           </div>
         </MobileNav>
