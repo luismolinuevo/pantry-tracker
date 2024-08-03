@@ -48,7 +48,7 @@ export default function EditItem({ onClose, item, isVisible }) {
   }, [item]);
 
   return (
-    <Modal onClose={onClose} isVisible={isVisible}>
+    <Modal onClose={onClose} isVisable={isVisible}>
       <Card color="transparent" shadow={false} className="flex justify-center">
         <Typography variant="h4" color="blue-gray">
           Edit Item

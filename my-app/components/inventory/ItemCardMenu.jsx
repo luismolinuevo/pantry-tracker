@@ -13,6 +13,8 @@ import EditItem from "./EditItemPopup";
 
 export default function ItemCardMenu({ item }) {
   const [edit, setEdit] = useState(false);
+
+  console.log(edit)
   
   return (
     <div>
@@ -34,12 +36,12 @@ export default function ItemCardMenu({ item }) {
           </svg>
         </MenuHandler>
         <MenuList>
-          <MenuItem onClick={() => setEdit(!edit)}>Edit</MenuItem>
+          <MenuItem onClick={() => setEdit(true)}>Edit</MenuItem>
           <MenuItem>Delete</MenuItem>
         </MenuList>
       </Menu>
 
-      {edit && <EditItem isVisable={edit} onClose={() => setEdit(false)} item={item}/>}
+      {edit && <EditItem isVisible={edit} onClose={() => setEdit(false)} item={item}/>}
     </div>
   );
 }
