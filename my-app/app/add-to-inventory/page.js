@@ -5,6 +5,7 @@ import { getCurrentUser } from "../lib/auth";
 import { useRouter } from "next/navigation";
 import { createItems } from "../lib/items";
 import { Card, Input, Button, Typography } from "../../material_tailwind";
+import { createItemWithImage } from "../lib/items";
 
 export default function Page() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export default function Page() {
   const [count, setCount] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -40,7 +42,29 @@ export default function Page() {
     setSuccess(null);
 
     try {
-      await createItems(userId, parseInt(count), name, parseFloat(price));
+      let item = null;
+      if (image) {
+        item = await createItemWithImage(
+          userId,
+          parseInt(count),
+          name,
+          parseFloat(price),
+          image
+        );
+      } else {
+        item = await createItems(
+          userId,
+          parseInt(count),
+          name,
+          parseFloat(price)
+        );
+      }
+
+      if (!item) {
+        console.log("Error creating item");
+        return;
+      }
+
       setSuccess("Item added successfully!");
       setName("");
       setCount("");
@@ -50,6 +74,12 @@ export default function Page() {
       setError("Failed to add item. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageChange = (event) => {
+    if (event.target.files[0]) {
+      setImage(event.target.files[0]);
     }
   };
 
@@ -109,7 +139,20 @@ export default function Page() {
                 className: "before:content-none after:content-none",
               }}
             />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Image
+            </Typography>
+            <Input
+              type="file"
+              size="lg"
+              onChange={handleImageChange}
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
           </div>
+
           <Button type="submit" className="mt-6" fullWidth disabled={loading}>
             {loading ? "Adding item..." : "Add Item"}
           </Button>
