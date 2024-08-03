@@ -5,7 +5,13 @@ import { Button, Input, Typography, Card } from "../../material_tailwind";
 import Modal from "../general/Modal";
 import { updateItem } from "@/app/lib/items"; // Ensure you have this import
 
-export default function EditItem({ onClose, item, isVisible }) {
+export default function EditItem({
+  onClose,
+  item,
+  isVisible,
+  onChange,
+  setOnChange,
+}) {
   const [count, setCount] = useState(item?.count);
   const [name, setName] = useState(item?.name);
   const [price, setPrice] = useState(item?.price);
@@ -30,6 +36,7 @@ export default function EditItem({ onClose, item, isVisible }) {
       if (result) {
         setSuccess("Item updated successfully!");
         onClose();
+        setOnChange(!onChange);
       } else {
         setError("Failed to update item. Please try again.");
       }

@@ -11,6 +11,7 @@ export default function route() {
   const router = useRouter();
   const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
+  const [onChange, setOnChange] = useState(false);
 
   useEffect(() => {
     const getUserId = async () => {
@@ -47,13 +48,13 @@ export default function route() {
 
     getUserId();
     fetchItems();
-  }, [userId, router]);
+  }, [userId, router, onChange]);
   return (
     <div className="">
       <InventoryHeader />
       {items &&
         items.length != 0 &&
-        items.map((item) => <ItemCard item={item} />)}
+        items.map((item, index) => <ItemCard item={item} key={index} />)}
     </div>
   );
 }

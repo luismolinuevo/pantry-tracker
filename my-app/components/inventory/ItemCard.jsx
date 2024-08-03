@@ -11,7 +11,7 @@ import {
 import React from "react";
 import ItemCardMenu from "./ItemCardMenu";
 
-export default function ItemCard({ item }) {
+export default function ItemCard({ item, onChange, setOnChange }) {
   return (
     <div className="w-[300px] md:w-[700px] border-[1px] border-black mx-10 my-10 px-5 py-5 rounded-xl">
       <div className="flex justify-between items-center">
@@ -35,7 +35,11 @@ export default function ItemCard({ item }) {
             {item?.count}
           </Typography>
         </div>
-        <ItemCardMenu item={item} />
+        <ItemCardMenu
+          item={item}
+          setOnChange={setOnChange}
+          onChange={onChange}
+        />
       </div>
     </div>
   );
