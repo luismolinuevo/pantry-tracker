@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getAllItems } from "../lib/items";
 import { getCurrentUser } from "../lib/auth";
 import { useRouter } from "next/navigation";
+import ItemCard from "@/components/inventory/ItemCard";
 
 export default function route() {
   const router = useRouter();
@@ -48,8 +49,9 @@ export default function route() {
     fetchItems();
   }, [userId, router]);
   return (
-    <div>
+    <div className="">
       <InventoryHeader />
+      <ItemCard item={items[0]} />
     </div>
   );
 }
