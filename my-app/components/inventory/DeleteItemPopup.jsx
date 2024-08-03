@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import Modal from "../general/Modal";
 import { deleteItem } from "@/app/lib/items";
+import { Button, Input, Typography, Card } from "../../material_tailwind";
 
 export default function DeleteItemPopup({
   item_id,
@@ -22,7 +23,7 @@ export default function DeleteItemPopup({
     setSuccess(null);
 
     try {
-      const result = await deleteItem(item.id);
+      const result = await deleteItem(item_id);
 
       if (result) {
         setSuccess("Item deleted successfully!");
@@ -40,17 +41,35 @@ export default function DeleteItemPopup({
   };
   return (
     <Modal isVisable={isVisible} onClose={onClose}>
-      <form
-        onSubmit={handleDelete}
-        className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
-      >
-        <Button type="submit" className="mt-6" fullWidth disabled={loading}>
-          {loading ? "Deleting item..." : "Delete Item"}
-        </Button>
+      <Card color="transparent" shadow={false} className="flex justify-center">
+        <Typography variant="h4" color="blue-gray">
+          Delete Item
+        </Typography>
+        <Typography color="gray" className="mt-1 font-normal">
+          Delete Item out of inventory
+        </Typography>
+        <form
+          onSubmit={handleDelete}
+          className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+        >
+          <div className="flex gap-2">
+            <Button type="submit" className="mt-6" fullWidth disabled={loading}>
+              {loading ? "Deleting item..." : "Delete Item"}
+            </Button>
+            <Button
+              onClick={onClose}
+              className="mt-6 bg-red-500"
+              fullWidth
+              disabled={loading}
+            >
+              Cancel
+            </Button>
+          </div>
 
-        {error && <p className="text-red-300 text-center">{error}</p>}
-        {success && <p className="text-green-300 text-center">{success}</p>}
-      </form>
+          {error && <p className="text-red-300 text-center">{error}</p>}
+          {success && <p className="text-green-300 text-center">{success}</p>}
+        </form>
+      </Card>
     </Modal>
   );
 }

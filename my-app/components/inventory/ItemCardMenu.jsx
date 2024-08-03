@@ -10,6 +10,7 @@ import {
 import React, { useState } from "react";
 import Modal from "../general/Modal";
 import EditItem from "./EditItemPopup";
+import DeleteItemPopup from "./DeleteItemPopup";
 
 export default function ItemCardMenu({ item, onChange, setOnChange }) {
   const [editItem, setEditItem] = useState(false);
@@ -36,15 +37,25 @@ export default function ItemCardMenu({ item, onChange, setOnChange }) {
         </MenuHandler>
         <MenuList>
           <MenuItem onClick={() => setEditItem(true)}>Edit</MenuItem>
-          <MenuItem>Delete</MenuItem>
+          <MenuItem onClick={() => setDeleteItem(true)}>Delete</MenuItem>
         </MenuList>
       </Menu>
 
       {editItem && (
         <EditItem
-          isVisible={edit}
+          isVisible={editItem}
           onClose={() => setEditItem(false)}
           item={item}
+          onChange={onChange}
+          setOnChange={setOnChange}
+        />
+      )}
+
+      {deleteItem && (
+        <DeleteItemPopup
+          isVisible={deleteItem}
+          onClose={() => setDeleteItem(false)}
+          item_id={item?.id}
           onChange={onChange}
           setOnChange={setOnChange}
         />

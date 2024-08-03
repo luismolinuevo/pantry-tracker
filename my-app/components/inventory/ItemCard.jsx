@@ -32,7 +32,7 @@ export default function ItemCard({ item, onChange, setOnChange }) {
             Price Per Item
           </Typography>
           <Typography className="text-center text-[25px]">
-            {item?.count}
+            {item?.price}
           </Typography>
         </div>
         <ItemCardMenu
