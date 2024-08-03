@@ -14,34 +14,34 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { uploadImage } from "./imageupload";
 
-const createItems = async (user_id, count, name, price) => {
-  try {
-    if (!user_id) {
-      console.log("No valid user id provided");
-      return false;
-    }
+// const createItems = async (user_id, count, name, price) => {
+//   try {
+//     if (!user_id) {
+//       console.log("No valid user id provided");
+//       return false;
+//     }
 
-    // Generate a unique ID for the new item
-    const newItemId = uuidv4();
+//     // Generate a unique ID for the new item
+//     const newItemId = uuidv4();
 
-    // Create a reference to the new document with the generated ID
-    const newItemRef = doc(collection(firestore, "items"), newItemId);
+//     // Create a reference to the new document with the generated ID
+//     const newItemRef = doc(collection(firestore, "items"), newItemId);
 
-    // Add the document with the specified ID
-    await setDoc(newItemRef, {
-      user_id: user_id,
-      count: count,
-      name: name,
-      price: price,
-      // picture:
-    });
+//     // Add the document with the specified ID
+//     await setDoc(newItemRef, {
+//       user_id: user_id,
+//       count: count,
+//       name: name,
+//       price: price,
+//       // picture:
+//     });
 
-    return newItemId;
-  } catch (error) {
-    console.error("Error creating a items", error);
-    return false;
-  }
-};
+//     return newItemId;
+//   } catch (error) {
+//     console.error("Error creating a items", error);
+//     return false;
+//   }
+// };
 
 // Get all items for a specific user
 const getAllItems = async (user_id) => {
@@ -86,17 +86,24 @@ const deleteItem = async (item_id) => {
   }
 };
 
-// Update an item by ID
-const updateItem = async (item_id, updatedData) => {
+const updateItem = async (item_id, updatedData, imageFile = null) => {
   try {
     if (!item_id) {
       console.log("No valid item id provided");
       return false;
     }
 
+    // If an image file is provided, upload it and get the new image URL
+    if (imageFile) {
+      const imageUrl = await uploadImage(imageFile);
+      if (imageUrl) {
+        updatedData.imageUrl = imageUrl;
+      }
+    }
+
     const itemRef = doc(firestore, "items", item_id);
     await updateDoc(itemRef, updatedData);
-    console.log(`Item with ID ${item_id} has been updated.`);
+
     return true;
   } catch (error) {
     console.error("Error updating item", error);
@@ -104,7 +111,7 @@ const updateItem = async (item_id, updatedData) => {
   }
 };
 
-const createItemWithImage = async (user_id, count, name, price, imageFile) => {
+const createItems = async (user_id, count, name, price, imageFile) => {
   try {
     if (!user_id) {
       console.log("No valid user id provided");
@@ -112,7 +119,11 @@ const createItemWithImage = async (user_id, count, name, price, imageFile) => {
     }
 
     // Upload the image and get the image URL
-    const imageUrl = await uploadImage(imageFile);
+    let imageUrl = null;
+
+    if (imageFile) {
+      imageUrl = await uploadImage(imageFile);
+    }
 
     // Add item details along with image URL to Firestore
     const newItem = await addDoc(collection(firestore, "items"), {
@@ -120,7 +131,7 @@ const createItemWithImage = async (user_id, count, name, price, imageFile) => {
       count: count,
       name: name,
       price: price,
-      imageUrl: imageUrl, // Store the image URL in Firestore
+      imageUrl: imageUrl,
     });
 
     if (newItem) {
