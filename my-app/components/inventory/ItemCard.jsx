@@ -35,7 +35,7 @@ export default function ItemCard({ item }) {
             {item?.count}
           </Typography>
         </div>
-        <ItemCardMenu />
+        <ItemCardMenu item_id={item?.id}/>
       </div>
     </div>
   );

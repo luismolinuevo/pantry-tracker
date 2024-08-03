@@ -11,6 +11,7 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+import { v4 as uuidv4 } from 'uuid';
 
 const createItems = async (user_id, count, name, price) => {
   try {
@@ -19,21 +20,25 @@ const createItems = async (user_id, count, name, price) => {
       return false;
     }
 
-    const new_items = await addDoc(collection(firestore, "items"), {
+    // Generate a unique ID for the new item
+    const newItemId = uuidv4();
+
+    // Create a reference to the new document with the generated ID
+    const newItemRef = doc(collection(firestore, "items"), newItemId);
+
+    // Add the document with the specified ID
+    await setDoc(newItemRef, {
       user_id: user_id,
       count: count,
       name: name,
       price: price,
-      //   picture:
+      // picture: 
     });
 
-    if (new_items) {
-      return new_items.id;
-    }
-
-    return false;
+    return newItemId;
   } catch (error) {
     console.error("Error creating a items", error);
+    return false;
   }
 };
 
