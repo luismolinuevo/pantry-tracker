@@ -8,6 +8,8 @@ import {
   getDocs,
   where,
   query,
+  deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 const createItems = async (user_id, count, name, price) => {
@@ -35,4 +37,65 @@ const createItems = async (user_id, count, name, price) => {
   }
 };
 
-export { createItems };
+// Get all items for a specific user
+const getAllItems = async (user_id) => {
+  try {
+    if (!user_id) {
+      console.log("No valid user id provided");
+      return [];
+    }
+
+    const q = query(
+      collection(firestore, "items"),
+      where("user_id", "==", user_id)
+    );
+    const querySnapshot = await getDocs(q);
+
+    const items = [];
+    querySnapshot.forEach((doc) => {
+      items.push({ id: doc.id, ...doc.data() });
+    });
+
+    return items;
+  } catch (error) {
+    console.error("Error getting items", error);
+    return [];
+  }
+};
+
+// Delete an item by ID
+const deleteItem = async (item_id) => {
+  try {
+    if (!item_id) {
+      console.log("No valid item id provided");
+      return false;
+    }
+
+    await deleteDoc(doc(firestore, "items", item_id));
+    console.log(`Item with ID ${item_id} has been deleted.`);
+    return true;
+  } catch (error) {
+    console.error("Error deleting item", error);
+    return false;
+  }
+};
+
+// Update an item by ID
+const updateItem = async (item_id, updatedData) => {
+  try {
+    if (!item_id) {
+      console.log("No valid item id provided");
+      return false;
+    }
+
+    const itemRef = doc(firestore, "items", item_id);
+    await updateDoc(itemRef, updatedData);
+    console.log(`Item with ID ${item_id} has been updated.`);
+    return true;
+  } catch (error) {
+    console.error("Error updating item", error);
+    return false;
+  }
+};
+
+export { createItems, getAllItems, deleteItem, updateItem };
