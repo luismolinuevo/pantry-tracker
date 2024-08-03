@@ -1,8 +1,10 @@
 import React from "react";
 import { Typography, Select, Option, Button } from "../../material_tailwind";
 import SearchBar from "./SearchBar";
+import { useRouter } from "next/navigation";
 
 export default function InventoryHeader() {
+  const router = useRouter();
   return (
     <div className="px-10 py-10">
       <Typography variant="h1" className="text-center">
@@ -23,7 +25,9 @@ export default function InventoryHeader() {
             </Select>
           </div>
         </div>
-        <Button>Add to Inventory</Button>
+        <Button onClick={() => router.push("/add-to-inventory")}>
+          Add to Inventory
+        </Button>
       </div>
     </div>
   );

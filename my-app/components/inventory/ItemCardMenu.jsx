@@ -7,9 +7,13 @@ import {
   MenuItem,
   Button,
 } from "../../material_tailwind";
-import React from "react";
+import React, { useState } from "react";
+import Modal from "../general/Modal";
+import EditItem from "./EditItemPopup";
 
-export default function ItemCardMenu({item_id}) {
+export default function ItemCardMenu({ item }) {
+  const [edit, setEdit] = useState(false);
+  
   return (
     <div>
       <Menu placement="left-end">
@@ -30,10 +34,12 @@ export default function ItemCardMenu({item_id}) {
           </svg>
         </MenuHandler>
         <MenuList>
-          <MenuItem>Edit</MenuItem>
+          <MenuItem onClick={() => setEdit(!edit)}>Edit</MenuItem>
           <MenuItem>Delete</MenuItem>
         </MenuList>
       </Menu>
+
+      {edit && <EditItem isVisable={edit} onClose={() => setEdit(false)} item={item}/>}
     </div>
   );
 }

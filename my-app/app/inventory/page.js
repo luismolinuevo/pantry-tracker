@@ -51,7 +51,9 @@ export default function route() {
   return (
     <div className="">
       <InventoryHeader />
-      <ItemCard item={items[0]} />
+      {items &&
+        items.length != 0 &&
+        items.map((item) => <ItemCard item={item} />)}
     </div>
   );
 }
