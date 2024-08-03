@@ -29,6 +29,8 @@ const login = async (email, password) => {
       email,
       password
     );
+
+    console.log(userCredential.user)
     return userCredential.user;
   } catch (error) {
     console.error("Error signing in with email and password: ", error);

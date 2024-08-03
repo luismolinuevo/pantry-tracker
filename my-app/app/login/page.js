@@ -70,16 +70,16 @@ export function Login() {
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Your Email
             </Typography>
-            <Input
-              size="lg"
-              placeholder="name@mail.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-              labelProps={{
-                className: "before:content-none after:content-none",
-              }}
-            />
+              <Input
+                size="lg"
+                placeholder="name@mail.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+                labelProps={{
+                  className: "before:content-none after:content-none",
+                }}
+              />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Password
             </Typography>
@@ -98,8 +98,16 @@ export function Login() {
           <Button type="submit" className="mt-6" fullWidth disabled={loading}>
             {loading ? "Logging in..." : "Log In"}
           </Button>
-          {error && <p className="text-red-300 text-center">{error}</p>}
-          {success && <p className="text-green-300 text-center">{success}</p>}
+          {error && (
+            <Typography className="text-red-300 text-center">
+              {error}
+            </Typography>
+          )}
+          {success && (
+            <Typography className="text-green-300 text-center">
+              {success}
+            </Typography>
+          )}
           <Typography
             variant="h6"
             color="blue-gray"
