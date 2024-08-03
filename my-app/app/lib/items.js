@@ -14,35 +14,6 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { uploadImage } from "./imageupload";
 
-// const createItems = async (user_id, count, name, price) => {
-//   try {
-//     if (!user_id) {
-//       console.log("No valid user id provided");
-//       return false;
-//     }
-
-//     // Generate a unique ID for the new item
-//     const newItemId = uuidv4();
-
-//     // Create a reference to the new document with the generated ID
-//     const newItemRef = doc(collection(firestore, "items"), newItemId);
-
-//     // Add the document with the specified ID
-//     await setDoc(newItemRef, {
-//       user_id: user_id,
-//       count: count,
-//       name: name,
-//       price: price,
-//       // picture:
-//     });
-
-//     return newItemId;
-//   } catch (error) {
-//     console.error("Error creating a items", error);
-//     return false;
-//   }
-// };
-
 // Get all items for a specific user
 const getAllItems = async (user_id) => {
   try {
@@ -86,7 +57,12 @@ const deleteItem = async (item_id) => {
   }
 };
 
-const updateItem = async (item_id, updatedData, imageFile = null) => {
+const updateItem = async (
+  item_id,
+  updatedData,
+  imageFile = null,
+  existingImageUrl = null
+) => {
   try {
     if (!item_id) {
       console.log("No valid item id provided");
@@ -99,6 +75,9 @@ const updateItem = async (item_id, updatedData, imageFile = null) => {
       if (imageUrl) {
         updatedData.imageUrl = imageUrl;
       }
+    } else if (existingImageUrl) {
+      // Retain the old image URL if no new image is provided
+      updatedData.imageUrl = existingImageUrl;
     }
 
     const itemRef = doc(firestore, "items", item_id);

@@ -15,6 +15,7 @@ export default function EditItem({
   const [count, setCount] = useState(item?.count);
   const [name, setName] = useState(item?.name);
   const [price, setPrice] = useState(item?.price);
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -31,7 +32,13 @@ export default function EditItem({
         name,
         price: parseFloat(price),
       };
-      const result = await updateItem(item.id, updatedData);
+
+      const result = await updateItem(
+        item.id,
+        updatedData,
+        image,
+        item.imageUrl
+      );
 
       if (result) {
         setSuccess("Item updated successfully!");
@@ -45,6 +52,12 @@ export default function EditItem({
       setError("Failed to update item. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageChange = (event) => {
+    if (event.target.files[0]) {
+      setImage(event.target.files[0]);
     }
   };
 
@@ -105,6 +118,18 @@ export default function EditItem({
               placeholder="Price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
+            <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Image
+            </Typography>
+            <Input
+              type="file"
+              size="lg"
+              onChange={handleImageChange}
               className="!border-t-blue-gray-200 focus:!border-t-gray-900"
               labelProps={{
                 className: "before:content-none after:content-none",
