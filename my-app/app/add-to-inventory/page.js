@@ -5,7 +5,6 @@ import { getCurrentUser } from "../lib/auth";
 import { useRouter } from "next/navigation";
 import { createItems } from "../lib/items";
 import { Card, Input, Button, Typography } from "../../material_tailwind";
-import { createItemWithImage } from "../lib/items";
 
 export default function Page() {
   const router = useRouter();
@@ -42,23 +41,13 @@ export default function Page() {
     setSuccess(null);
 
     try {
-      let item = null;
-      if (image) {
-        item = await createItemWithImage(
-          userId,
-          parseInt(count),
-          name,
-          parseFloat(price),
-          image
-        );
-      } else {
-        item = await createItems(
-          userId,
-          parseInt(count),
-          name,
-          parseFloat(price)
-        );
-      }
+      let item = await createItems(
+        userId,
+        parseInt(count),
+        name,
+        parseFloat(price),
+        image
+      );
 
       if (!item) {
         console.log("Error creating item");

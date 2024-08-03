@@ -125,6 +125,9 @@ const createItems = async (user_id, count, name, price, imageFile) => {
       imageUrl = await uploadImage(imageFile);
     }
 
+    // Generate a unique ID for the new item
+    const newItemId = uuidv4();
+
     // Add item details along with image URL to Firestore
     const newItem = await addDoc(collection(firestore, "items"), {
       user_id: user_id,
@@ -132,6 +135,7 @@ const createItems = async (user_id, count, name, price, imageFile) => {
       name: name,
       price: price,
       imageUrl: imageUrl,
+      id: newItemId,
     });
 
     if (newItem) {
@@ -145,10 +149,4 @@ const createItems = async (user_id, count, name, price, imageFile) => {
   }
 };
 
-export {
-  createItems,
-  getAllItems,
-  deleteItem,
-  updateItem,
-  createItemWithImage,
-};
+export { createItems, getAllItems, deleteItem, updateItem };
