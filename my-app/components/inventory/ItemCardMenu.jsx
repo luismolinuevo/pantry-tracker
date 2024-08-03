@@ -12,7 +12,8 @@ import Modal from "../general/Modal";
 import EditItem from "./EditItemPopup";
 
 export default function ItemCardMenu({ item, onChange, setOnChange }) {
-  const [edit, setEdit] = useState(false);
+  const [editItem, setEditItem] = useState(false);
+  const [deleteItem, setDeleteItem] = useState(false);
 
   return (
     <div>
@@ -34,15 +35,15 @@ export default function ItemCardMenu({ item, onChange, setOnChange }) {
           </svg>
         </MenuHandler>
         <MenuList>
-          <MenuItem onClick={() => setEdit(true)}>Edit</MenuItem>
+          <MenuItem onClick={() => setEditItem(true)}>Edit</MenuItem>
           <MenuItem>Delete</MenuItem>
         </MenuList>
       </Menu>
 
-      {edit && (
+      {editItem && (
         <EditItem
           isVisible={edit}
-          onClose={() => setEdit(false)}
+          onClose={() => setEditItem(false)}
           item={item}
           onChange={onChange}
           setOnChange={setOnChange}
