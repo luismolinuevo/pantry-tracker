@@ -49,12 +49,20 @@ export default function route() {
     getUserId();
     fetchItems();
   }, [userId, router, onChange]);
+
   return (
     <div className="">
       <InventoryHeader />
       {items &&
         items.length != 0 &&
-        items.map((item, index) => <ItemCard item={item} key={index} />)}
+        items.map((item, index) => (
+          <ItemCard
+            item={item}
+            key={index}
+            onChange={onChange}
+            setOnChange={setOnChange}
+          />
+        ))}
     </div>
   );
 }
