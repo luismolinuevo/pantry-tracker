@@ -10,10 +10,14 @@ import {
 } from "../../material_tailwind";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { logOut } from "@/app/lib/auth";
+import { getCurrentUser } from "@/app/lib/auth";
+import { Collapse } from "@material-tailwind/react";
 
 export function StickyNavbar() {
   const router = useRouter();
   const [openNav, setOpenNav] = useState(false);
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     window.addEventListener(
@@ -21,6 +25,31 @@ export function StickyNavbar() {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const user = await getCurrentUser();
+        if (user) {
+          setUserId(user.uid);
+        } else {
+          router.push("/login");
+        }
+      } catch (error) {
+        console.log("Unable to get user id", error);
+      }
+    };
+
+    getUserId();
+  }, [router]);
+
+  const logUserOut = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.log("Unable to logout user");
+    }
+  };
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -47,6 +76,38 @@ export function StickyNavbar() {
     </ul>
   );
 
+  const authList = userId ? (
+    <div className="flex items-center gap-x-1">
+      <Button
+        variant="gradient"
+        size="sm"
+        className="lg:inline-block"
+        onClick={logUserOut}
+      >
+        <span>Logout</span>
+      </Button>
+    </div>
+  ) : (
+    <div className="flex items-center gap-x-1">
+      <Button
+        variant="text"
+        size="sm"
+        className="lg:inline-block"
+        onClick={() => router.push("/login")}
+      >
+        <span>Log In</span>
+      </Button>
+      <Button
+        variant="gradient"
+        size="sm"
+        className="lg:inline-block"
+        onClick={() => router.push("/signup")}
+      >
+        <span>Sign Up</span>
+      </Button>
+    </div>
+  );
+
   return (
     <div className="max-h-[768px]">
       <Navbar className="sticky top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
@@ -56,24 +117,38 @@ export function StickyNavbar() {
           </Typography>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
-            <div className="flex items-center gap-x-1">
-              <Button
-                variant="text"
-                size="sm"
-                className="hidden lg:inline-block"
-                onClick={() => router.push("/login")}
-              >
-                <span>Log In</span>
-              </Button>
-              <Button
-                variant="gradient"
-                size="sm"
-                className="hidden lg:inline-block"
-                onClick={() => router.push("/signup")}
-              >
-                <span>Sign up</span>
-              </Button>
-            </div>
+            <div className="hidden lg:block">{authList}</div>
+            {/* {!userId ? (
+              <div className="flex items-center gap-x-1">
+                <Button
+                  variant="text"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  onClick={() => router.push("/login")}
+                >
+                  <span>Log In</span>
+                </Button>
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  onClick={() => router.push("/signup")}
+                >
+                  <span>Sign up</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-x-1">
+                <Button
+                  variant="gradient"
+                  size="sm"
+                  className="hidden lg:inline-block"
+                  onClick={logUserOut}
+                >
+                  <span>Logout</span>
+                </Button>
+              </div>
+            )} */}
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -113,9 +188,13 @@ export function StickyNavbar() {
             </IconButton>
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
-          <div className="flex items-center gap-x-1">
+          <div className="flex flex-col gap-2 lg:hidden">
+            <div className="py-2">{authList}</div>
+          </div>
+
+          {/* <div className="flex items-center gap-x-1">
             <Button
               fullWidth
               variant="text"
@@ -134,8 +213,8 @@ export function StickyNavbar() {
             >
               <span>Sign up</span>
             </Button>
-          </div>
-        </MobileNav>
+          </div> */}
+        </Collapse>
       </Navbar>
     </div>
   );

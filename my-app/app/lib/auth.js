@@ -3,9 +3,10 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
-  onAuthStateChanged
+  onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 
 //I would add more error handling in the future
 const signUp = async (email, password) => {
@@ -30,7 +31,7 @@ const login = async (email, password) => {
       password
     );
 
-    console.log(userCredential.user)
+    console.log(userCredential.user);
     return userCredential.user;
   } catch (error) {
     console.error("Error signing in with email and password: ", error);
@@ -59,18 +60,19 @@ const signInWithGoogle = async () => {
 
 const getCurrentUser = async () => {
   return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      unsubscribe(); // Clean up listener
-      if (user) {
-        resolve(user);
-      } else {
-        reject(new Error("No current user found"));
-      }
-    }, reject);
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (user) => {
+        unsubscribe(); // Clean up listener
+        if (user) {
+          resolve(user);
+        } else {
+          reject(new Error("No current user found"));
+        }
+      },
+      reject
+    );
   });
 };
-
-
-
 
 export { signUp, login, logOut, signInWithGoogle, getCurrentUser };
