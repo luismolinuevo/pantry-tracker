@@ -51,18 +51,20 @@ export default function route() {
   }, [userId, router, onChange]);
 
   return (
-    <div className="">
+    <div className="px-10 py-10">
       <InventoryHeader />
-      {items &&
-        items.length != 0 &&
-        items.map((item, index) => (
-          <ItemCard
-            item={item}
-            key={index}
-            onChange={onChange}
-            setOnChange={setOnChange}
-          />
-        ))}
+      <div className="flex flex-wrap gap-6 justify-center">
+        {items &&
+          items.length != 0 &&
+          items.map((item, index) => (
+            <ItemCard
+              item={item}
+              key={index}
+              onChange={onChange}
+              setOnChange={setOnChange}
+            />
+          ))}
+      </div>
     </div>
   );
 }

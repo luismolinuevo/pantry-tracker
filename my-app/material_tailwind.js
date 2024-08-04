@@ -15,6 +15,9 @@ import {
   MenuHandler,
   MenuList,
   MenuItem,
+  CardHeader,
+  CardBody,
+  CardFooter,
 } from "@material-tailwind/react";
 
 export {
@@ -32,4 +35,7 @@ export {
   MenuHandler,
   MenuList,
   MenuItem,
+  CardHeader,
+  CardBody,
+  CardFooter,
 };
