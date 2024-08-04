@@ -6,15 +6,20 @@ import { getAllItems } from "../lib/items";
 import { getCurrentUser } from "../lib/auth";
 import { useRouter } from "next/navigation";
 import ItemCard from "@/components/inventory/ItemCard";
+import { Typography, Button } from "../../material_tailwind";
 
-export default function route() {
+export default function Route() {
   const router = useRouter();
   const [userId, setUserId] = useState("");
   const [items, setItems] = useState([]);
+  const [lastDoc, setLastDoc] = useState(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
   const [onChange, setOnChange] = useState(false);
 
   useEffect(() => {
-    const getUserId = async () => {
+    const fetchUserId = async () => {
       try {
         const user = await getCurrentUser();
         if (user) {
@@ -23,48 +28,77 @@ export default function route() {
           router.push("/login");
         }
       } catch (error) {
-        console.log("Unable to get user id", error);
+        console.error("Unable to get user id", error);
       }
     };
 
-    const fetchItems = async () => {
-      try {
-        if (!userId) {
-          console.log("No user id provided");
-        }
+    fetchUserId();
+  }, [router]);
 
-        const items = await getAllItems(userId);
+  useEffect(() => {
+    if (userId) {
+      setItems([]);
+      setLastDoc(null);
+      fetchItems();
+    }
+  }, [userId, onChange, search]);
 
-        if (!items) {
-          console.log("No items fetched");
-        }
+  const fetchItems = async () => {
+    setLoading(true);
+    try {
+      console.log("Fetching items...");
+      const { items: newItems, lastDoc: newLastDoc } = await getAllItems(
+        userId,
+        search, // Assuming you're not searching for now
+        "A-Z", // Sort order
+        lastDoc, // Pagination
+        3 // items per page
+      );
+      console.log("Fetched items:", newItems);
+      setItems((prevItems) => [...prevItems, ...newItems]);
+      setLastDoc(newLastDoc);
+      // Check if the number of items fetched is less than the requested itemsPerPage
+      setHasMore(newItems.length === 3); // Consistent with itemsPerPage
+    } catch (error) {
+      console.error("Unable to fetch items", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setItems(items);
-        console.log(items);
-      } catch (error) {
-        console.log("Unable to get user items", error);
-      }
-    };
-
-    getUserId();
-    fetchItems();
-  }, [userId, router, onChange]);
+  const loadMoreItems = () => {
+    if (hasMore && !loading) {
+      fetchItems();
+    }
+  };
 
   return (
     <div className="px-10 py-10">
-      <InventoryHeader />
+      <InventoryHeader setSearch={setSearch} />
       <div className="flex flex-wrap gap-6 justify-center">
-        {items &&
-          items.length != 0 &&
+        {items.length > 0 ? (
           items.map((item, index) => (
             <ItemCard
               item={item}
               key={index}
-              onChange={onChange}
               setOnChange={setOnChange}
+              onChange={onChange}
             />
-          ))}
+          ))
+        ) : (
+          <Typography>No items found.</Typography>
+        )}
       </div>
+      {loading && (
+        <div className="flex justify-center">
+          <Typography>Loading...</Typography>
+        </div>
+      )}
+      {hasMore && !loading && (
+        <div className="flex justify-center my-12">
+          <Button onClick={loadMoreItems}>Load More</Button>
+        </div>
+      )}
     </div>
   );
 }

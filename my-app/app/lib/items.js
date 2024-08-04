@@ -10,33 +10,77 @@ import {
   query,
   deleteDoc,
   updateDoc,
+  limit,
+  startAfter,
+  orderBy,
+  startAt,
+  endAt,
 } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import { uploadImage } from "./imageupload";
 
-// Get all items for a specific user
-const getAllItems = async (user_id) => {
+const getAllItems = async (
+  user_id,
+  searchTerm,
+  sortOrder = "A-Z",
+  lastVisible = null,
+  itemsPerPage = 3
+) => {
   try {
     if (!user_id) {
       console.log("No valid user id provided");
-      return [];
+      return { items: [], lastDoc: null };
     }
 
-    const q = query(
+    let q = query(
       collection(firestore, "items"),
       where("user_id", "==", user_id)
     );
-    const querySnapshot = await getDocs(q);
 
+    if (searchTerm) {
+    }
+    q = query(
+      q,
+      where("name", ">=", searchTerm),
+      where("name", "<=", searchTerm + "\uf8ff")
+    );
+
+    switch (sortOrder) {
+      case "A-Z":
+        q = query(q, orderBy("name", "asc"));
+        break;
+      case "Z-A":
+        q = query(q, orderBy("name", "desc"));
+        break;
+      case "Newest to Oldest":
+        q = query(q, orderBy("createdAt", "desc"));
+        break;
+      case "Oldest to Newest":
+        q = query(q, orderBy("createdAt", "asc"));
+        break;
+      default:
+        break;
+    }
+
+    if (lastVisible) {
+      q = query(q, startAfter(lastVisible));
+    }
+
+    q = query(q, limit(itemsPerPage));
+
+    const querySnapshot = await getDocs(q);
+    console.log("Query Snapshot:", querySnapshot);
     const items = [];
     querySnapshot.forEach((doc) => {
       items.push({ id: doc.id, ...doc.data() });
     });
 
-    return items;
+    const lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+    return { items, lastDoc };
   } catch (error) {
     console.error("Error getting items", error);
-    return [];
+    return { items: [], lastDoc: null };
   }
 };
 

@@ -3,7 +3,7 @@ import { Typography, Select, Option, Button } from "../../material_tailwind";
 import SearchBar from "./SearchBar";
 import { useRouter } from "next/navigation";
 
-export default function InventoryHeader() {
+export default function InventoryHeader({ setSearch }) {
   const router = useRouter();
   return (
     <div className="px-10 py-10">
@@ -12,7 +12,7 @@ export default function InventoryHeader() {
       </Typography>
       <div className="flex justify-between py-8">
         <div className="flex gap-4">
-          <SearchBar />
+          <SearchBar setSearch={setSearch} />
           {/* <Select label="Filter">
             <Option></Option>
           </Select> */}
