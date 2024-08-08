@@ -27,6 +27,7 @@ export default function DemoLogin() {
       setEmail("");
       setPassword("");
       router.push("/");
+      window.location.reload(true);
     } catch (error) {
       console.error("Error logging in with email and password: ", error);
       setError(

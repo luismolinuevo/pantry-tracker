@@ -26,6 +26,7 @@ export function Login() {
       setEmail("");
       setPassword("");
       router.push("/");
+      window.location.reload(true);
     } catch (error) {
       console.error("Error logging in with email and password: ", error);
       setError(
@@ -70,16 +71,16 @@ export function Login() {
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Your Email
             </Typography>
-              <Input
-                size="lg"
-                placeholder="name@mail.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="!border-t-blue-gray-200 focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
+            <Input
+              size="lg"
+              placeholder="name@mail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="!border-t-blue-gray-200 focus:!border-t-gray-900"
+              labelProps={{
+                className: "before:content-none after:content-none",
+              }}
+            />
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Password
             </Typography>

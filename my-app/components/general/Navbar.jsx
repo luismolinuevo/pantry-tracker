@@ -46,6 +46,8 @@ export function StickyNavbar() {
   const logUserOut = async () => {
     try {
       await logOut();
+      router.push("/");
+      window.location.reload(true);
     } catch (error) {
       console.log("Unable to logout user");
     }
