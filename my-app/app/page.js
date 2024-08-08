@@ -31,12 +31,12 @@ export default function Home() {
 
   return (
     <main className="flex items-center h-full px-10 py-10">
-      <div className="flex justify-between">
+      <div className="flex justify-between gap-6 flex-col lg:flex-row">
         <div>
-          <Typography variant="h1" className="text-[50px]">
+          <Typography variant="h1" className="md:text-[40px] lg:text-[45px]">
             Pantry Tracker
           </Typography>
-          <Typography className="text-[30px]">
+          <Typography className="text-[25px] mb-5">
             A Pantry Tracker is a convenient app that helps you manage your
             pantry inventory, track expiration dates, and plan meals
             efficiently. Stay organized and reduce food waste by knowing exactly
@@ -52,7 +52,7 @@ export default function Home() {
             </div>
           )}
         </div>
-        <img src="/Landingpage.jpeg" className="w-[45%] h-[400px]" />
+        <img src="/Landingpage.jpeg" className="w-[[50%]] h-[300px] md:h-[400px]" />
       </div>
     </main>
   );
