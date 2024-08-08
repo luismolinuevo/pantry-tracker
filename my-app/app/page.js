@@ -1,3 +1,6 @@
+"use client"
+
+import DemoLogin from "@/components/general/DemoLogin";
 import { Typography, Button } from "../material_tailwind";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -5,9 +8,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
 
-  const demoLogin = async () => {
-    
-  };
+  const demoLogin = async () => {};
 
   return (
     <main className="flex items-center h-full px-10 py-10">
@@ -24,7 +25,7 @@ export default function Home() {
             your shopping list updated!
           </Typography>
           <Button onClick="/login">Login</Button>
-          <Button onClick={demoLogin}>Demo</Button>
+          <DemoLogin />
         </div>
         <img src="/Landingpage.jpeg" className="w-[45%] h-[400px]" />
       </div>

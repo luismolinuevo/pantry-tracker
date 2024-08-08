@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { login } from "@/app/lib/auth";
+import { Button } from "../../material_tailwind";
 
 export default function DemoLogin() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function DemoLogin() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -34,5 +36,5 @@ export default function DemoLogin() {
       setLoading(false);
     }
   };
-  return <div></div>;
+  return <Button onClick={handleLogin}>Demo Login</Button>;
 }
